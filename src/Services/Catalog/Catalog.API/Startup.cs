@@ -98,10 +98,11 @@ namespace Catalog.API
 
             app.UseStaticFiles();
 
-            // Make work identity server redirections in Edge and lastest versions of browers. WARN: Not valid in a production environment.
             app.Use(async (context, next) =>
             {
-                context.Response.Headers.Add("Content-Security-Policy", "script-src 'unsafe-inline'");
+                // 'unsafe-inline': Make work identity server redirections in Edge and lastest versions of browers. WARN: Not valid in a production environment.
+                // 'self': Allow swagger scripts
+                context.Response.Headers.Add("Content-Security-Policy", "script-src 'unsafe-inline' 'self'");
                 await next();
             });
 
