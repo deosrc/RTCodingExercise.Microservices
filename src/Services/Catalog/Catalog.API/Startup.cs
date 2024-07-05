@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using Catalog.API.Data.Repositories;
+using MassTransit;
 using Microsoft.OpenApi.Models;
 using RabbitMQ.Client;
 
@@ -76,6 +77,8 @@ namespace Catalog.API
             });
 
             services.AddMassTransitHostedService();
+
+            services.AddScoped<IPlateRepository, EFPlateRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
