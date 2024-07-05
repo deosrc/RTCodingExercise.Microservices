@@ -1,19 +1,18 @@
-﻿namespace RTCodingExercise.Microservices.Controllers;
+﻿using RTCodingExercise.Microservices.Services;
+
+namespace RTCodingExercise.Microservices.Controllers;
 public class PlatesController : Controller
 {
-    public IActionResult Index()
+    private readonly ICatalogService _catalogService;
+
+    public PlatesController(ICatalogService catalogService)
     {
-        var plates = new List<Plate>()
-        {
-            new()
-            {
-                Registration = "Test Reg",
-                PurchasePrice = 123.44M,
-                SalePrice = 123.33M,
-                Letters = "TEST",
-                Numbers = 123
-            }
-        };
+        _catalogService = catalogService;
+    }
+
+    public async Task<IActionResult> Index(CancellationToken cancellationToken = default)
+    {
+        var plates = await _catalogService.GetPlatesAsync(cancellationToken);
         return View(plates);
     }
 }
