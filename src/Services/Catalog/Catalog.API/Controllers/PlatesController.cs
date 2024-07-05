@@ -1,4 +1,5 @@
 ﻿using Catalog.API.Data.Repositories;
+using System.Net;
 
 namespace Catalog.API.Controllers;
 [Route("api/[controller]")]
@@ -13,8 +14,9 @@ public class PlatesController : ControllerBase
     }
 
     [HttpGet("")]
-    public Task<IActionResult> List(CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(IEnumerable<Plate>), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> List(CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return new OkObjectResult(await _platesRepository.GetPlatesAsync(cancellationToken));
     }
 }
