@@ -1,12 +1,12 @@
 ﻿using AutoFixture;
 using Catalog.Domain;
+using Microsoft.Extensions.Logging;
+using Moq;
 using RichardSzalay.MockHttp;
 using RTCodingExercise.Microservices.Services;
-using System.Collections;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -23,7 +23,7 @@ public class CatalogApiServiceTests
         {
             BaseUrl = "http://localtest.me/api/"
         };
-        _sut = new(new HttpClient(_mockHandler), options);
+        _sut = new(new HttpClient(_mockHandler), options, Mock.Of<ILogger<CatalogApiService>>());
     }
 
     [Fact]
@@ -38,5 +38,17 @@ public class CatalogApiServiceTests
 
         _mockHandler.VerifyNoOutstandingExpectation();
         Assert.Equal(plates, result);
+    }
+
+    [Fact]
+    public async Task GetPlatesAsync_WhenErrorResponse_ThrowsException()
+    {
+        _mockHandler
+            .Expect("http://localtest.me/api/Plates")
+            .Respond(HttpStatusCode.InternalServerError);
+
+        async Task act() => await _sut.GetPlatesAsync();
+
+        var ex = await Assert.ThrowsAsync<ApiServiceException<CatalogApiService>>(act);
     }
 }
