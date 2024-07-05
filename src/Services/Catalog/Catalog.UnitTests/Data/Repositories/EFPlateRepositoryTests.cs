@@ -3,6 +3,8 @@ using Catalog.API.Data;
 using Catalog.API.Data.Repositories;
 using Catalog.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -21,17 +23,34 @@ public class EFPlateRepositoryTests : IDisposable
             .UseInMemoryDatabase(databaseName: "Test1")
             .Options;
         _db = new(options);
-        _sut = new(_db);
+        _sut = new(_db, Mock.Of<ILogger<EFPlateRepository>>());
     }
 
     [Fact]
-    public async Task GetPlates_ReturnsAllPlates()
+    public async Task GetPlatesAsync_ReturnsAllPlates()
     {
         var plates = _fixture.CreateMany<Plate>(100);
         await SetupPlatesDbSetAsync(plates);
 
         var result = await _sut.GetPlatesAsync();
         Assert.Equal(plates, result);
+    }
+
+    [Fact]
+    public async Task AddPlateAsync_WhenSuccessful_ReturnsSuccessAndNewPlate()
+    {
+        var plate = _fixture
+            .Build<Plate>()
+            .With(x => x.Id, Guid.Empty)
+            .Create();
+
+        var result = await _sut.AddPlateAsync(plate);
+
+        Assert.True(result.IsSuccess);
+        Assert.Equal("Success", result.Message);
+        Assert.NotNull(result.Result);
+        Assert.NotEqual(Guid.Empty, result.Result!.Id);
+        Assert.Equal(plate, result.Result);
     }
 
     private async Task SetupPlatesDbSetAsync(IEnumerable<Plate> plates)
