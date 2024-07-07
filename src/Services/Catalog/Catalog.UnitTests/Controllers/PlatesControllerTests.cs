@@ -1,10 +1,10 @@
 ﻿using AutoFixture;
 using Catalog.API.Controllers;
 using Catalog.API.Data.Repositories;
+using Catalog.API.Services.SalesPriceMarkup;
 using Catalog.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -14,11 +14,12 @@ public class PlatesControllerTests
 {
     private readonly Fixture _fixture = new();
     private readonly Mock<IPlateRepository> _mockPlateRepository = new();
+    private readonly Mock<ISalesPriceMarkupService> _mockSalesPriceMarkupService = new();
     private readonly PlatesController _sut;
 
     public PlatesControllerTests()
     {
-        _sut = new(_mockPlateRepository.Object);
+        _sut = new(_mockPlateRepository.Object, _mockSalesPriceMarkupService.Object);
     }
 
     [Fact]
@@ -34,6 +35,12 @@ public class PlatesControllerTests
         var result = await _sut.List();
 
         // Assert
+        _mockSalesPriceMarkupService.Verify(x => x.AddSalesPriceMarkup(It.IsAny<Plate>()), Times.Exactly(100));
+        foreach (var p in plates)
+        {
+            _mockSalesPriceMarkupService.Verify(x => x.AddSalesPriceMarkup(p), Times.Once());
+        }
+
         Assert.IsType<OkObjectResult>(result);
         var objectResult = (OkObjectResult)result;
         Assert.Equal(plates, objectResult.Value);
