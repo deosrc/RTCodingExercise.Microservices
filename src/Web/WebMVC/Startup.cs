@@ -1,5 +1,6 @@
 ﻿using MassTransit;
 using RabbitMQ.Client;
+using RTCodingExercise.Microservices.Services;
 
 namespace RTCodingExercise.WebMVC
 {
@@ -45,6 +46,13 @@ namespace RTCodingExercise.WebMVC
             });
 
             services.AddMassTransitHostedService();
+
+            services.AddHttpClient();
+
+            services.AddSingleton<ICatalogService, CatalogApiService>();
+            services
+                .AddOptions<CatalogApiOptions>()
+                .Bind(Configuration.GetSection(nameof(CatalogApiOptions)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

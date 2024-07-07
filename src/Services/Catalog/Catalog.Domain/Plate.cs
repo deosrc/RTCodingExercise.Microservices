@@ -1,6 +1,6 @@
 ﻿namespace Catalog.Domain
 {
-    public class Plate
+    public record Plate
     {
         public Guid Id { get; set; }
 
