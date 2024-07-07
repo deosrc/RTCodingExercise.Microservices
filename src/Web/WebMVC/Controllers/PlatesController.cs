@@ -30,11 +30,7 @@ public class PlatesController : Controller
             return View(plate);
         }
 
-        var result = new OperationResult
-        {
-            IsSuccess = false,
-            Message = "Not implemented"
-        };
+        var result = await _catalogService.AddPlateAsync(plate, cancellationToken);
         if (result.IsSuccess)
         {
             return RedirectToAction(nameof(Index));
