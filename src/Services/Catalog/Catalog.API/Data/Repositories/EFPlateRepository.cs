@@ -1,6 +1,6 @@
 ﻿namespace Catalog.API.Data.Repositories;
 
-public partial class EFPlateRepository : IPlateRepository
+public class EFPlateRepository : IPlateRepository
 {
     private readonly ApplicationDbContext _dbContext;
     private readonly ILogger<EFPlateRepository> _logger;
