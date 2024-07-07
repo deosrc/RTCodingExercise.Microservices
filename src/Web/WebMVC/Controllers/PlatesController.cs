@@ -1,4 +1,4 @@
-using RTCodingExercise.Microservices.Services;
+﻿using RTCodingExercise.Microservices.Services;
 
 namespace RTCodingExercise.Microservices.Controllers;
 public class PlatesController : Controller
@@ -20,5 +20,27 @@ public class PlatesController : Controller
     public IActionResult Add()
     {
         return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Add(Plate plate, CancellationToken cancellationToken = default)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(plate);
+        }
+
+        var result = new OperationResult
+        {
+            IsSuccess = false,
+            Message = "Not implemented"
+        };
+        if (result.IsSuccess)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        ModelState.AddModelError(string.Empty, result.Message);
+        return View(plate);
     }
 }

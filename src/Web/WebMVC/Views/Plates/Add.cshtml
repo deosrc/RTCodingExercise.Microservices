@@ -7,11 +7,11 @@
 <h1 class="h1">Add Plate</h1>
 
 <form method="post">
-    <div asp-validation-summary="ModelOnly"></div>
+    <div class="alert alert-danger" action="alert" asp-validation-summary="ModelOnly"></div>
     <div class="mb-3">
         <label asp-for="Registration" class="form-label">Registration</label>
         <input asp-for="Registration" type="text" required pattern="[0-9A-Z]+" class="form-control" />
-        <span asp-validation-for="Registration"></span>
+        <span class="text-danger" asp-validation-for="Registration"></span>
     </div>
     <div class="mb-3">
         <label asp-for="PurchasePrice" class="form-label">Purchase Price</label>
@@ -19,7 +19,7 @@
             <span class="input-group-text">£</span>
             <input asp-for="PurchasePrice" type="text" inputmode="numeric" pattern="[0-9.]*" required class="form-control" />
         </div>
-        <span asp-validation-for="PurchasePrice"></span>
+        <span class="text-danger" asp-validation-for="PurchasePrice"></span>
     </div>
     <div class="mb-3">
         <label asp-for="SalePrice" class="form-label">Sale Price</label>
@@ -27,17 +27,17 @@
             <span class="input-group-text">£</span>
             <input asp-for="SalePrice" type="text" inputmode="numeric" pattern="[0-9.]*" required class="form-control" />
         </div>
-        <span asp-validation-for="SalePrice"></span>
+        <span class="text-danger" asp-validation-for="SalePrice"></span>
     </div>
     <div class="mb-3">
         <label asp-for="Letters" class="form-label">Letters</label>
         <input asp-for="Letters" type="text" pattern="[A-Z]*" class="form-control" />
-        <span asp-validation-for="Letters"></span>
+        <span class="text-danger" asp-validation-for="Letters"></span>
     </div>
     <div class="mb-3">
         <label asp-for="Numbers" class="form-label">Numbers</label>
-        <input asp-for="Numbers" type="text" inputmode="numeric" pattern="[0-9]*" class="form-control" />
-        <span asp-validation-for="Numbers"></span>
+        <input asp-for="Numbers" type="text" required inputmode="numeric" pattern="[0-9]*" class="form-control" />
+        <span class="text-danger" asp-validation-for="Numbers"></span>
     </div>
     <button type="submit" class="btn btn-primary">Add</button>
 </form>
