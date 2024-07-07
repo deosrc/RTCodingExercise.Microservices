@@ -1,4 +1,4 @@
-﻿using RTCodingExercise.Microservices.Services;
+using RTCodingExercise.Microservices.Services;
 
 namespace RTCodingExercise.Microservices.Controllers;
 public class PlatesController : Controller
@@ -14,5 +14,11 @@ public class PlatesController : Controller
     {
         var plates = await _catalogService.GetPlatesAsync(cancellationToken);
         return View(plates);
+    }
+
+    [HttpGet]
+    public IActionResult Add()
+    {
+        return View();
     }
 }
