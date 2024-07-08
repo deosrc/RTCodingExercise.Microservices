@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 
 namespace Catalog.API.Data
 {
@@ -19,7 +19,7 @@ namespace Catalog.API.Data
                 {
                     retryForAvaiability++;
 
-                    logger.LogError(ex.Message, $"There is an error migrating data for ApplicationDbContext");
+                    logger.LogError(ex, $"There is an error migrating data for ApplicationDbContext");
 
                     await SeedAsync(context, env, logger, settings, retryForAvaiability);
                 }
@@ -37,7 +37,7 @@ namespace Catalog.API.Data
             }
             catch (Exception ex)
             {
-                logger.LogError(ex.Message, ex);
+                logger.LogError(ex, ex.Message);
                 throw;
             }
         }
