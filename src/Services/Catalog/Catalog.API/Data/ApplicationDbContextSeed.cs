@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Catalog.API.Data
 {
@@ -10,6 +10,15 @@ namespace Catalog.API.Data
 
             try
             {
+                // If there is already data in the database, skip seeding the database.
+                // Adding data which already exists causes exceptions and significantly impacts performance.
+                var hasData = await context.Plates.AnyAsync();
+                if (hasData)
+                {
+                    logger.LogWarning("Data already exists in the database. Skipping data seeding.");
+                    return;
+                }
+
                 await SeedCustomData(context, env, logger);
             }
             catch (Exception ex)
