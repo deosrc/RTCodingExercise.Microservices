@@ -1,4 +1,5 @@
-﻿
+﻿using System.Text.Json;
+
 namespace RTCodingExercise.Microservices.Services;
 
 public class CatalogApiService : ICatalogService
@@ -36,5 +37,46 @@ public class CatalogApiService : ICatalogService
             _logger.LogError(ex, "Failed to retrieve plates from Catalog API.");
             throw new ApiServiceException<CatalogApiService>("Failed to retrieve plates.", ex);
         }
+    }
+
+    public async Task<OperationResult<Plate>> AddPlateAsync(Plate plate, CancellationToken cancellationToken = default)
+    {
+
+        try
+        {
+            var response = await _http.PostAsJsonAsync("Plates", plate, cancellationToken);
+            return await ParseOperationResponseAsync<Plate>(response);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to add plate using Catalog API.");
+            throw new ApiServiceException<CatalogApiService>("Failed to add plate.", ex);
+        }
+    }
+
+    private async Task<OperationResult<TResult>> ParseOperationResponseAsync<TResult>(HttpResponseMessage response, CancellationToken cancellationToken = default)
+        where TResult : class
+    {
+        if (response.IsSuccessStatusCode)
+            return new OperationResult<TResult>
+            {
+                IsSuccess = true,
+                Result = await response.Content.ReadFromJsonAsync<TResult>(cancellationToken: cancellationToken)
+            };
+
+        ProblemDetails? problemDetails = null;
+        try
+        {
+            problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>(cancellationToken: cancellationToken);
+        }
+        catch (JsonException ex)
+        {
+            _logger.LogWarning(ex, "Could not parse error response: {Message}", ex.Message);
+        }
+        return new OperationResult<TResult>
+        {
+            IsSuccess = false,
+            Message = problemDetails?.Detail ?? "A system error occurred. Please contact the IT team."
+        };
     }
 }
