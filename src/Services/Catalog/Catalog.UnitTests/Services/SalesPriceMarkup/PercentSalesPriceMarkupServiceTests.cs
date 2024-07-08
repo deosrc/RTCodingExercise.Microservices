@@ -32,6 +32,7 @@ public class PercentSalesPriceMarkupServiceTests
     [InlineData(5, 300, 315)]
     [InlineData(10, 100, 110)]
     [InlineData(20, 100, 120)]
+    [InlineData(100, 100.02, 200.04)]
     public void AddSalesPriceMarkup(int percentMarkup, decimal salesPrice, decimal expected)
     {
         var plate = new Plate()
