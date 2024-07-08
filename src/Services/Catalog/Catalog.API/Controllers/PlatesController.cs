@@ -24,14 +24,8 @@ public class PlatesController : ControllerBase
     [ProducesResponseType(typeof(Plate), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> Add(Plate plate, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> Add(NewPlate plate, CancellationToken cancellationToken = default)
     {
-        if (plate.Id != Guid.Empty)
-            return Problem(
-                title: "Id should not be provided",
-                detail: "Id will be auto-generated and should not be provided.",
-                statusCode: (int)HttpStatusCode.BadRequest);
-
         var result = await _platesRepository.AddPlateAsync(plate, cancellationToken);
         if (!result.IsSuccess)
             return Problem(

@@ -41,37 +41,12 @@ public class PlatesControllerTests
     }
 
     [Fact]
-    public async Task Add_WhenIdProvided_ReturnsProblem()
-    {
-        var plate = new Plate
-        {
-            Id = Guid.NewGuid()
-        };
-
-        // Act
-        var result = await _sut.Add(plate);
-
-        // Assert
-        Assert.IsType<ObjectResult>(result);
-
-        var objectResult = (ObjectResult)result;
-        Assert.Equal(400, objectResult.StatusCode);
-        Assert.NotNull(objectResult.Value);
-        Assert.IsType<ProblemDetails>(objectResult.Value);
-
-        var problemDetails = (ProblemDetails)objectResult.Value!;
-        Assert.Equal("Id should not be provided", problemDetails.Title);
-        Assert.Equal("Id will be auto-generated and should not be provided.", problemDetails.Detail);
-        Assert.Equal(400, problemDetails.Status);
-    }
-
-    [Fact]
     public async Task Add_WhenAddFails_ReturnsProblem()
     {
-        var plate = _fixture.Build<Plate>().With(x => x.Id, Guid.Empty).Create();
+        var plate = _fixture.Create<NewPlate>();
 
         _mockPlateRepository
-            .Setup(x => x.AddPlateAsync(It.IsAny<Plate>(), It.IsAny<CancellationToken>()))
+            .Setup(x => x.AddPlateAsync(It.IsAny<NewPlate>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new OperationResult<Plate>
             {
                 IsSuccess = false,
@@ -101,29 +76,30 @@ public class PlatesControllerTests
     [Fact]
     public async Task Add_WhenSuccessful_ReturnsPlate()
     {
-        var plate = _fixture.Build<Plate>().With(x => x.Id, Guid.Empty).Create();
+        var newPlate = _fixture.Create<NewPlate>();
+        var resultingPlate = _fixture.Create<Plate>();
 
         _mockPlateRepository
-            .Setup(x => x.AddPlateAsync(It.IsAny<Plate>(), It.IsAny<CancellationToken>()))
+            .Setup(x => x.AddPlateAsync(It.IsAny<NewPlate>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new OperationResult<Plate>
             {
                 IsSuccess = true,
                 Message = "Test message",
-                Result = plate
+                Result = resultingPlate
             });
 
         var cancellationToken = new CancellationToken();
 
         // Act
-        var result = await _sut.Add(plate, cancellationToken);
+        var result = await _sut.Add(newPlate, cancellationToken);
 
         // Assert
-        _mockPlateRepository.Verify(x => x.AddPlateAsync(plate, cancellationToken));
+        _mockPlateRepository.Verify(x => x.AddPlateAsync(newPlate, cancellationToken));
         Assert.IsType<OkObjectResult>(result);
 
         var objectResult = (OkObjectResult)result;
         Assert.Equal(200, objectResult.StatusCode);
         Assert.NotNull(objectResult.Value);
-        Assert.Equal(plate, objectResult.Value);
+        Assert.Equal(resultingPlate, objectResult.Value);
     }
 }
