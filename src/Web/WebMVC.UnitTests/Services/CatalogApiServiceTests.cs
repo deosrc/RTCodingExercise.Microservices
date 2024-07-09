@@ -54,7 +54,7 @@ public class CatalogApiServiceTests
     }
 
     [Fact]
-    public async Task GetPlatesAsync_WhenSuccessResponse_ReturnsSuccessOperationResult()
+    public async Task AddPlateAsync_WhenSuccessResponse_ReturnsSuccessOperationResult()
     {
         var plate = _fixture.Create<Plate>();
         _mockHandler
@@ -74,7 +74,7 @@ public class CatalogApiServiceTests
     }
 
     [Fact]
-    public async Task GetPlatesAsync_WhenProblemDetailsErrorResponse_ThrowsException()
+    public async Task AddPlateAsync_WhenProblemDetailsErrorResponse_ThrowsException()
     {
         var problemDetails = new ProblemDetails
         {
@@ -98,7 +98,7 @@ public class CatalogApiServiceTests
     }
 
     [Fact]
-    public async Task GetPlatesAsync_WhenErrorResponse_ReturnsFailedOperationResult()
+    public async Task AddPlateAsync_WhenErrorResponse_ReturnsFailedOperationResult()
     {
         var plate = _fixture.Create<Plate>();
         _mockHandler
