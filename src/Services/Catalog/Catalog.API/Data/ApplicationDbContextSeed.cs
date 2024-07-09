@@ -10,6 +10,15 @@ namespace Catalog.API.Data
 
             try
             {
+                // If there is already data in the database, skip seeding the database.
+                // Adding data which already exists causes exceptions and significantly impacts performance.
+                var hasData = await context.Plates.AnyAsync();
+                if (hasData)
+                {
+                    logger.LogWarning("Data already exists in the database. Skipping data seeding.");
+                    return;
+                }
+
                 await SeedCustomData(context, env, logger);
             }
             catch (Exception ex)
@@ -19,7 +28,7 @@ namespace Catalog.API.Data
                 {
                     retryForAvaiability++;
 
-                    logger.LogError(ex.Message, $"There is an error migrating data for ApplicationDbContext");
+                    logger.LogError(ex, $"There is an error migrating data for ApplicationDbContext");
 
                     await SeedAsync(context, env, logger, settings, retryForAvaiability);
                 }
@@ -37,7 +46,7 @@ namespace Catalog.API.Data
             }
             catch (Exception ex)
             {
-                logger.LogError(ex.Message, ex);
+                logger.LogError(ex, ex.Message);
                 throw;
             }
         }
