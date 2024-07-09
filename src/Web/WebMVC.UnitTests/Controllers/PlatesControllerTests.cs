@@ -39,7 +39,7 @@ public class PlatesControllerTests
     [Fact]
     public async Task Add_WithModelError_ReturnsToPage()
     {
-        var plate = _fixture.Create<Plate>();
+        var plate = _fixture.Create<NewPlate>();
         _sut.ModelState.AddModelError(string.Empty, "Model validation error");
 
         var result = await _sut.Add(plate);
@@ -54,9 +54,9 @@ public class PlatesControllerTests
     [Fact]
     public async Task Add_WhenServiceReturnsSuccessulOperation_RedirectsToList()
     {
-        var plate = _fixture.Create<Plate>();
+        var plate = _fixture.Create<NewPlate>();
         _mockCatalogService
-            .Setup(x => x.AddPlateAsync(It.IsAny<Plate>(), It.IsAny<CancellationToken>()))
+            .Setup(x => x.AddPlateAsync(It.IsAny<NewPlate>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new OperationResult<Plate>()
             {
                 IsSuccess = true
@@ -64,7 +64,7 @@ public class PlatesControllerTests
 
         var result = await _sut.Add(plate);
 
-        _mockCatalogService.Verify(x => x.AddPlateAsync(It.IsAny<Plate>(), It.IsAny<CancellationToken>()), Times.Once());
+        _mockCatalogService.Verify(x => x.AddPlateAsync(It.IsAny<NewPlate>(), It.IsAny<CancellationToken>()), Times.Once());
         _mockCatalogService.Verify(x => x.AddPlateAsync(plate, It.IsAny<CancellationToken>()), Times.Once());
 
         Assert.IsType<RedirectToActionResult>(result);
@@ -75,9 +75,9 @@ public class PlatesControllerTests
     [Fact]
     public async Task Add_WhenServiceReturnsFailedOperation_ReturnsToPage()
     {
-        var plate = _fixture.Create<Plate>();
+        var plate = _fixture.Create<NewPlate>();
         _mockCatalogService
-            .Setup(x => x.AddPlateAsync(It.IsAny<Plate>(), It.IsAny<CancellationToken>()))
+            .Setup(x => x.AddPlateAsync(It.IsAny<NewPlate>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new OperationResult<Plate>()
             {
                 IsSuccess = false,
@@ -86,7 +86,7 @@ public class PlatesControllerTests
 
         var result = await _sut.Add(plate);
 
-        _mockCatalogService.Verify(x => x.AddPlateAsync(It.IsAny<Plate>(), It.IsAny<CancellationToken>()), Times.Once());
+        _mockCatalogService.Verify(x => x.AddPlateAsync(It.IsAny<NewPlate>(), It.IsAny<CancellationToken>()), Times.Once());
         _mockCatalogService.Verify(x => x.AddPlateAsync(plate, It.IsAny<CancellationToken>()), Times.Once());
 
         Assert.IsType<ViewResult>(result);

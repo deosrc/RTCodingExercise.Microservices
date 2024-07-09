@@ -56,17 +56,18 @@ public class CatalogApiServiceTests
     [Fact]
     public async Task AddPlateAsync_WhenSuccessResponse_ReturnsSuccessOperationResult()
     {
-        var plate = _fixture.Create<Plate>();
+        var newPlate = _fixture.Create<NewPlate>();
+        var resultingPlate = _fixture.Create<Plate>();
         _mockHandler
             .Expect(HttpMethod.Post, "http://localtest.me/api/Plates")
-            .Respond(HttpStatusCode.OK, JsonContent.Create(plate));
+            .Respond(HttpStatusCode.OK, JsonContent.Create(resultingPlate));
 
-        var result = await _sut.AddPlateAsync(plate);
+        var result = await _sut.AddPlateAsync(newPlate);
 
         var expected = new OperationResult<Plate>
         {
             IsSuccess = true,
-            Result = plate
+            Result = resultingPlate
         };
 
         _mockHandler.VerifyNoOutstandingExpectation();
@@ -84,7 +85,7 @@ public class CatalogApiServiceTests
             .Expect(HttpMethod.Post, "http://localtest.me/api/Plates")
             .Respond(HttpStatusCode.BadRequest, JsonContent.Create(problemDetails));
 
-        var plate = _fixture.Create<Plate>();
+        var plate = _fixture.Create<NewPlate>();
         var result = await _sut.AddPlateAsync(plate);
 
         var expected = new OperationResult<Plate>
@@ -100,7 +101,7 @@ public class CatalogApiServiceTests
     [Fact]
     public async Task AddPlateAsync_WhenErrorResponse_ReturnsFailedOperationResult()
     {
-        var plate = _fixture.Create<Plate>();
+        var plate = _fixture.Create<NewPlate>();
         _mockHandler
             .Expect(HttpMethod.Post, "http://localtest.me/api/Plates")
             .Respond(HttpStatusCode.InternalServerError);
