@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using Catalog.Domain;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using RichardSzalay.MockHttp;
@@ -50,5 +51,70 @@ public class CatalogApiServiceTests
         async Task act() => await _sut.GetPlatesAsync();
 
         var ex = await Assert.ThrowsAsync<ApiServiceException<CatalogApiService>>(act);
+    }
+
+    [Fact]
+    public async Task AddPlateAsync_WhenSuccessResponse_ReturnsSuccessOperationResult()
+    {
+        var newPlate = _fixture.Create<NewPlate>();
+        var resultingPlate = _fixture.Create<Plate>();
+        _mockHandler
+            .Expect(HttpMethod.Post, "http://localtest.me/api/Plates")
+            .Respond(HttpStatusCode.OK, JsonContent.Create(resultingPlate));
+
+        var result = await _sut.AddPlateAsync(newPlate);
+
+        var expected = new OperationResult<Plate>
+        {
+            IsSuccess = true,
+            Result = resultingPlate
+        };
+
+        _mockHandler.VerifyNoOutstandingExpectation();
+        Assert.Equal(expected, result);
+    }
+
+    [Fact]
+    public async Task AddPlateAsync_WhenProblemDetailsErrorResponse_ThrowsException()
+    {
+        var problemDetails = new ProblemDetails
+        {
+            Detail = "Test error"
+        };
+        _mockHandler
+            .Expect(HttpMethod.Post, "http://localtest.me/api/Plates")
+            .Respond(HttpStatusCode.BadRequest, JsonContent.Create(problemDetails));
+
+        var plate = _fixture.Create<NewPlate>();
+        var result = await _sut.AddPlateAsync(plate);
+
+        var expected = new OperationResult<Plate>
+        {
+            IsSuccess = false,
+            Message = "Test error"
+        };
+
+        _mockHandler.VerifyNoOutstandingExpectation();
+        Assert.Equal(expected, result);
+    }
+
+    [Fact]
+    public async Task AddPlateAsync_WhenErrorResponse_ReturnsFailedOperationResult()
+    {
+        var plate = _fixture.Create<NewPlate>();
+        _mockHandler
+            .Expect(HttpMethod.Post, "http://localtest.me/api/Plates")
+            .Respond(HttpStatusCode.InternalServerError);
+
+        var result = await _sut.AddPlateAsync(plate);
+
+        var expected = new OperationResult<Plate>
+        {
+            IsSuccess = false,
+            Message = "A system error occurred. Please contact the IT team."
+        };
+
+        _mockHandler.VerifyNoOutstandingExpectation();
+        Assert.Equal(expected, result);
     }
 }

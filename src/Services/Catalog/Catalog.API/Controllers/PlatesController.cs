@@ -27,4 +27,20 @@ public class PlatesController : ControllerBase
         }
         return new OkObjectResult(plates);
     }
+
+    [HttpPost("")]
+    [ProducesResponseType(typeof(Plate), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.InternalServerError)]
+    public async Task<IActionResult> Add(NewPlate plate, CancellationToken cancellationToken = default)
+    {
+        var result = await _platesRepository.AddPlateAsync(plate, cancellationToken);
+        if (!result.IsSuccess)
+            return Problem(
+                title: "Operation failed",
+                detail: result.Message,
+                statusCode: (int)HttpStatusCode.InternalServerError);
+
+        return Ok(result.Result);
+    }
 }
