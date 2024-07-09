@@ -39,10 +39,7 @@ public class EFPlateRepositoryTests : IDisposable
     [Fact]
     public async Task AddPlateAsync_WhenSuccessful_ReturnsSuccessAndNewPlate()
     {
-        var plate = _fixture
-            .Build<Plate>()
-            .With(x => x.Id, Guid.Empty)
-            .Create();
+        var plate = _fixture.Create<NewPlate>();
 
         var result = await _sut.AddPlateAsync(plate);
 
@@ -50,7 +47,12 @@ public class EFPlateRepositoryTests : IDisposable
         Assert.Equal("Success", result.Message);
         Assert.NotNull(result.Result);
         Assert.NotEqual(Guid.Empty, result.Result!.Id);
-        Assert.Equal(plate, result.Result);
+
+        Assert.Equal(plate.Registration, result.Result.Registration);
+        Assert.Equal(plate.PurchasePrice, result.Result.PurchasePrice);
+        Assert.Equal(plate.SalePrice, result.Result.SalePrice);
+        Assert.Equal(plate.Letters, result.Result.Letters);
+        Assert.Equal(plate.Numbers, result.Result.Numbers);
     }
 
     private async Task SetupPlatesDbSetAsync(IEnumerable<Plate> plates)

@@ -39,7 +39,7 @@ public class CatalogApiService : ICatalogService
         }
     }
 
-    public async Task<OperationResult<Plate>> AddPlateAsync(Plate plate, CancellationToken cancellationToken = default)
+    public async Task<OperationResult<Plate>> AddPlateAsync(NewPlate plate, CancellationToken cancellationToken = default)
     {
 
         try

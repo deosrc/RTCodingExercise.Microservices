@@ -23,7 +23,7 @@ public class PlatesController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add(Plate plate, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> Add(NewPlate plate, CancellationToken cancellationToken = default)
     {
         if (!ModelState.IsValid)
         {

@@ -11,20 +11,28 @@ public class EFPlateRepository : IPlateRepository
         _logger = logger;
     }
 
-    public async Task<OperationResult<Plate>> AddPlateAsync(Plate plate, CancellationToken cancellationToken = default)
+    public async Task<OperationResult<Plate>> AddPlateAsync(NewPlate plate, CancellationToken cancellationToken = default)
     {
         try
         {
-            // Ensure a new ID is always generated
-            plate.Id = Guid.NewGuid();
+            // Consider adding Mapperly or similar if this becomes more complex
+            var entity = new Plate()
+            {
+                Id = Guid.NewGuid(),
+                Registration = plate.Registration,
+                PurchasePrice = plate.PurchasePrice,
+                SalePrice = plate.SalePrice,
+                Letters = plate.Letters,
+                Numbers = plate.Numbers
+            };
 
-            _dbContext.Plates.Add(plate);
+            _dbContext.Plates.Add(entity);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return new()
             {
                 IsSuccess = true,
                 Message = "Success",
-                Result = plate
+                Result = entity
             };
         }
         catch (DbUpdateException ex)
