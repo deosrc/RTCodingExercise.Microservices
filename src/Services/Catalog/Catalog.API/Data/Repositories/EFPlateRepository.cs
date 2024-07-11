@@ -1,4 +1,4 @@
-namespace Catalog.API.Data.Repositories;
+﻿namespace Catalog.API.Data.Repositories;
 
 public class EFPlateRepository : IPlateRepository
 {
@@ -48,9 +48,22 @@ public class EFPlateRepository : IPlateRepository
 
     public async Task<PagedResult<Plate>> GetPlatesAsync(PagingOptions? paging = null, CancellationToken cancellationToken = default)
     {
-        paging ??= new PagingOptions();
-        var plates = await _dbContext.Plates.ToListAsync(cancellationToken);
-        var pageInfo = new PageInfo(paging, false);
-        return new PagedResult<Plate>(plates, pageInfo);
+        paging ??= new();
+
+        // Get 1 more result than required to check if there are more pages.
+        var start = paging.ItemsPerPage * (paging.Page - 1);
+        var take = paging.ItemsPerPage + 1;
+
+        var response = await _dbContext.Plates
+            .OrderBy(x => x.Id) // Always order results to ensure consistency. Future story can make this configurable.
+            .Skip(start)
+            .Take(take)
+            .ToListAsync(cancellationToken);
+
+        var results = response.Take(paging.ItemsPerPage).ToList();
+        var hasMorePages = response.Count > paging.ItemsPerPage;
+
+        var pageInfo = new PageInfo(paging, hasMorePages);
+        return new PagedResult<Plate>(results, pageInfo);
     }
 }
