@@ -26,18 +26,18 @@ public class PlatesControllerTests
     public async Task List_ReturnsAllPlates()
     {
         // Arrange
-        var plates = _fixture.CreateMany<Plate>(100);
+        var response = _fixture.Create<PagedResult<Plate>>();
         _mockPlateRepository
-            .Setup(x => x.GetPlatesAsync(It.IsAny<CancellationToken>()))
-            .ReturnsAsync(plates);
+            .Setup(x => x.GetPlatesAsync(It.IsAny<PagingOptions>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(response);
 
         // Act
-        var result = await _sut.List();
+        var result = await _sut.List(new());
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
         var objectResult = (OkObjectResult)result;
-        Assert.Equal(plates, objectResult.Value);
+        Assert.Equal(response, objectResult.Value);
     }
 
     [Fact]

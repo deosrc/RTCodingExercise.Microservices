@@ -33,7 +33,7 @@ public class EFPlateRepositoryTests : IDisposable
         await SetupPlatesDbSetAsync(plates);
 
         var result = await _sut.GetPlatesAsync();
-        Assert.Equal(plates, result);
+        Assert.Equal(plates, result.Results);
     }
 
     [Fact]

@@ -1,4 +1,4 @@
-﻿namespace Catalog.API.Data.Repositories;
+namespace Catalog.API.Data.Repositories;
 
 public class EFPlateRepository : IPlateRepository
 {
@@ -46,8 +46,11 @@ public class EFPlateRepository : IPlateRepository
         }
     }
 
-    public async Task<IEnumerable<Plate>> GetPlatesAsync(CancellationToken cancellationToken = default)
+    public async Task<PagedResult<Plate>> GetPlatesAsync(PagingOptions? paging = null, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Plates.ToListAsync(cancellationToken);
+        paging ??= new PagingOptions();
+        var plates = await _dbContext.Plates.ToListAsync(cancellationToken);
+        var pageInfo = new PageInfo(paging, false);
+        return new PagedResult<Plate>(plates, pageInfo);
     }
 }

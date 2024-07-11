@@ -14,10 +14,10 @@ public class PlatesController : ControllerBase
     }
 
     [HttpGet("")]
-    [ProducesResponseType(typeof(IEnumerable<Plate>), (int)HttpStatusCode.OK)]
-    public async Task<IActionResult> List(CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(PagedResult<Plate>), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> List(ListRequest request, CancellationToken cancellationToken = default)
     {
-        return new OkObjectResult(await _platesRepository.GetPlatesAsync(cancellationToken));
+        return new OkObjectResult(await _platesRepository.GetPlatesAsync(request.Paging, cancellationToken));
     }
 
     [HttpPost("")]
