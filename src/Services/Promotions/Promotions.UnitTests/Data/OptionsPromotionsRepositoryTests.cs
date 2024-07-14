@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AutoFixture;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Time.Testing;
 using Moq;
@@ -13,6 +14,7 @@ public class OptionsPromotionsRepositoryTests
     /// </summary>
     private readonly DateTime MockedDateTime = new(2024, 07, 14, 17, 32, 01, DateTimeKind.Utc);
 
+    private readonly Fixture _fixture = new();
     private readonly List<Promotion> _promotions = [];
     private readonly OptionsPromotionsRepository _sut;
 
@@ -39,13 +41,17 @@ public class OptionsPromotionsRepositoryTests
     [InlineData("test123")]
     public async Task GetCurrentPromotionByCodeAsync_WhenPromotionAvailable_ReturnsPromotion(string promotionCode)
     {
-        var promotion = new Promotion
-        {
-            Code = "TEST123",
-            ValidFrom = MockedDateTime.AddDays(-12),
-            ValidUntil = MockedDateTime.AddDays(12)
-        };
+        var validPeriodPromotionGenerator = _fixture
+            .Build<Promotion>()
+            .With(x => x.ValidFrom, MockedDateTime.AddDays(-12))
+            .With(x => x.ValidUntil, MockedDateTime.AddDays(12));
+
+        var promotion = validPeriodPromotionGenerator
+            .With(x => x.Code, "TEST123")
+            .Create();
+        _promotions.AddRange(validPeriodPromotionGenerator.CreateMany(10));
         _promotions.Add(promotion);
+        _promotions.AddRange(validPeriodPromotionGenerator.CreateMany(10));
 
         var result = await _sut.GetCurrentPromotionByCodeAsync(promotionCode);
         Assert.NotNull(result);

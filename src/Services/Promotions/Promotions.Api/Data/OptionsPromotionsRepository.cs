@@ -37,6 +37,6 @@ public class OptionsPromotionsRepository(IOptionsMonitor<IEnumerable<Promotion>>
         }
 
         _logger.LogInformation("Valid and current promotion found for {PromotionCode}.", code);
-        return Task.FromResult(Promotions.SingleOrDefault());
+        return Task.FromResult(promotion);
     }
 }
