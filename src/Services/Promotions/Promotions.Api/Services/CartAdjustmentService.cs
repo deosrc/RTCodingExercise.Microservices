@@ -1,4 +1,5 @@
-using Promotions.Api.Data;
+﻿using Promotions.Api.Data;
+using Promotions.Api.Services.PromotionTypes;
 using Promotions.Domain;
 
 namespace Promotions.Api.Services;
@@ -18,6 +19,11 @@ public class CartAdjustmentService(IPromotionsRepository promotionsRepository, I
                 Message = "Promotion code is not valid."
             };
 
-        throw new NotImplementedException();
+        IPromotionTypeService promotionTypeService = promotion.Type switch
+        {
+            _ => throw new InvalidOperationException("Unrecognised promotion type.")
+        };
+
+        return promotionTypeService.TryApplyPromotion(cart, promotion.Options);
     }
 }
