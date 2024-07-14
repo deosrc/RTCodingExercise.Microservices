@@ -19,7 +19,6 @@ namespace Catalog.Domain
         public string? Letters { get; set; }
 
         [Required]
-        [RegularExpression("[0-9]{1,7}")]
         public int Numbers { get; set; }
     }
 }
