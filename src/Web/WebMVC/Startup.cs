@@ -1,6 +1,7 @@
 ﻿using MassTransit;
 using RabbitMQ.Client;
-using RTCodingExercise.Microservices.Services;
+using RTCodingExercise.Microservices.Services.Catalog;
+using RTCodingExercise.Microservices.Services.Promotions;
 
 namespace RTCodingExercise.WebMVC
 {
@@ -53,6 +54,11 @@ namespace RTCodingExercise.WebMVC
             services
                 .AddOptions<CatalogApiOptions>()
                 .Bind(Configuration.GetSection(nameof(CatalogApiOptions)));
+
+            services.AddSingleton<IPromotionsApiService, PromotionsApiService>();
+            services
+                .AddOptions<PromotionsApiOptions>()
+                .Bind(Configuration.GetSection(nameof(PromotionsApiOptions)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

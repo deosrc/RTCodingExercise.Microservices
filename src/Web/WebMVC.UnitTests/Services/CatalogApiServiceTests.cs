@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using RichardSzalay.MockHttp;
 using RTCodingExercise.Microservices.Services;
+using RTCodingExercise.Microservices.Services.Catalog;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;

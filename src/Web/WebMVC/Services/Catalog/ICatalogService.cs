@@ -1,4 +1,4 @@
-﻿namespace RTCodingExercise.Microservices.Services;
+﻿namespace RTCodingExercise.Microservices.Services.Catalog;
 
 public interface ICatalogService
 {

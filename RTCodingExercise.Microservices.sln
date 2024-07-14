@@ -31,9 +31,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebHost.Customization", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.UnitTests", "src\Services\Catalog\Catalog.UnitTests\Catalog.UnitTests.csproj", "{D542A113-5EFD-467D-82F6-0007A10C57B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationEvents", "src\BuildingBlocks\EventBus\IntegrationEvents\IntegrationEvents.csproj", "{CCCA3C50-1C76-43FC-826F-2CE49FEEAA20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationEvents", "src\BuildingBlocks\EventBus\IntegrationEvents\IntegrationEvents.csproj", "{CCCA3C50-1C76-43FC-826F-2CE49FEEAA20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebMVC.UnitTests", "src\Web\WebMVC.UnitTests\WebMVC.UnitTests.csproj", "{29902EB0-0A34-4860-B386-F26A6A9E83DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebMVC.UnitTests", "src\Web\WebMVC.UnitTests\WebMVC.UnitTests.csproj", "{29902EB0-0A34-4860-B386-F26A6A9E83DC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Promotions", "Promotions", "{5C64B1CC-DAE4-4DCE-AE30-CBFDDFC9CCC8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Promotions.Api", "src\Services\Promotions\Promotions.Api\Promotions.Api.csproj", "{B0C495D8-9E9A-4792-AA37-CFAAEB623B91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Promotions.UnitTests", "src\Services\Promotions\Promotions.UnitTests\Promotions.UnitTests.csproj", "{3F5AFC43-87B4-4A79-A966-86C4965D45CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Promotions.Domain", "src\Services\Promotions\Promotions.Domain\Promotions.Domain.csproj", "{2C8EF115-1266-4938-B9A4-24A6DA1FEA84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +81,18 @@ Global
 		{29902EB0-0A34-4860-B386-F26A6A9E83DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29902EB0-0A34-4860-B386-F26A6A9E83DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29902EB0-0A34-4860-B386-F26A6A9E83DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0C495D8-9E9A-4792-AA37-CFAAEB623B91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0C495D8-9E9A-4792-AA37-CFAAEB623B91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0C495D8-9E9A-4792-AA37-CFAAEB623B91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0C495D8-9E9A-4792-AA37-CFAAEB623B91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F5AFC43-87B4-4A79-A966-86C4965D45CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F5AFC43-87B4-4A79-A966-86C4965D45CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F5AFC43-87B4-4A79-A966-86C4965D45CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F5AFC43-87B4-4A79-A966-86C4965D45CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C8EF115-1266-4938-B9A4-24A6DA1FEA84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C8EF115-1266-4938-B9A4-24A6DA1FEA84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C8EF115-1266-4938-B9A4-24A6DA1FEA84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C8EF115-1266-4938-B9A4-24A6DA1FEA84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,6 +110,10 @@ Global
 		{D542A113-5EFD-467D-82F6-0007A10C57B5} = {95B252D5-8772-441E-BC34-1F3768DE7B9F}
 		{CCCA3C50-1C76-43FC-826F-2CE49FEEAA20} = {832C0F4F-1E9E-455D-88A0-F50801284952}
 		{29902EB0-0A34-4860-B386-F26A6A9E83DC} = {FBA400A2-74D7-4116-9482-B644233F395F}
+		{5C64B1CC-DAE4-4DCE-AE30-CBFDDFC9CCC8} = {748D1901-EE22-46D1-B534-B9D605E92154}
+		{B0C495D8-9E9A-4792-AA37-CFAAEB623B91} = {5C64B1CC-DAE4-4DCE-AE30-CBFDDFC9CCC8}
+		{3F5AFC43-87B4-4A79-A966-86C4965D45CC} = {5C64B1CC-DAE4-4DCE-AE30-CBFDDFC9CCC8}
+		{2C8EF115-1266-4938-B9A4-24A6DA1FEA84} = {5C64B1CC-DAE4-4DCE-AE30-CBFDDFC9CCC8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B19EF1D8-35D7-45AD-BB0F-3F922F60904B}
