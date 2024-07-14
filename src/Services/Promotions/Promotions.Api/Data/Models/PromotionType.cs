@@ -2,5 +2,6 @@
 
 public enum PromotionType
 {
-    MoneyOff = 1
+    MoneyOff = 1,
+    PercentOff = 2
 }

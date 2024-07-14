@@ -13,11 +13,12 @@ public class CartAdjustmentServiceTests
     private readonly Fixture _fixture = new();
     private readonly Mock<IPromotionsRepository> _mockPromotionRepository = new();
     private readonly Mock<IMoneyOffPromotion> _mockMoneyOffPromotion = new();
+    private readonly Mock<IPercentOffPromotion> _mockPercentOffPromotion = new();
     private readonly CartAdjustmentService _sut;
 
     public CartAdjustmentServiceTests()
     {
-        _sut = new(_mockPromotionRepository.Object, _mockMoneyOffPromotion.Object, Mock.Of<ILogger<CartAdjustmentService>>());
+        _sut = new(_mockPromotionRepository.Object, _mockMoneyOffPromotion.Object, _mockPercentOffPromotion.Object, Mock.Of<ILogger<CartAdjustmentService>>());
     }
 
     [Fact]
@@ -100,6 +101,42 @@ public class CartAdjustmentServiceTests
         Assert.Multiple(
             () => _mockPromotionRepository.Verify(x => x.GetCurrentPromotionByCodeAsync("TEST123", It.IsAny<CancellationToken>())),
             () => _mockMoneyOffPromotion.Verify(x => x.TryApplyPromotion(cart, "64f3d985-f036-444e-b6ee-a38b239d53b3", promotionOptions), Times.Once()),
+            () => Assert.Same(expected, result)
+        );
+    }
+
+    [Fact]
+    public async Task TryApplyPromotionAsync_WhenPercentOffPromotionType_ReturnsPromotionResult()
+    {
+        var promotionOptions = _fixture.Create<Dictionary<string, string>>();
+        _mockPromotionRepository
+            .Setup(x => x.GetCurrentPromotionByCodeAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new Promotion()
+            {
+                Id = Guid.Parse("64f3d985-f036-444e-b6ee-a38b239d53b3"),
+                Code = "TEST123",
+                Type = PromotionType.PercentOff,
+                Options = promotionOptions
+            });
+
+        var expected = _fixture
+            .Build<PromotionApplyResult>()
+            .With(x => x.IsSuccess, true)
+            .Create();
+        _mockPercentOffPromotion
+            .Setup(x => x.TryApplyPromotion(It.IsAny<Cart>(), It.IsAny<string>(), It.IsAny<IReadOnlyDictionary<string, string>>()))
+            .Returns(expected);
+
+        var cart = _fixture
+            .Build<Cart>()
+            .With(x => x.PromotionCode, "TEST123")
+            .Create();
+
+        var result = await _sut.TryApplyPromotionAsync(cart);
+
+        Assert.Multiple(
+            () => _mockPromotionRepository.Verify(x => x.GetCurrentPromotionByCodeAsync("TEST123", It.IsAny<CancellationToken>())),
+            () => _mockPercentOffPromotion.Verify(x => x.TryApplyPromotion(cart, "64f3d985-f036-444e-b6ee-a38b239d53b3", promotionOptions), Times.Once()),
             () => Assert.Same(expected, result)
         );
     }

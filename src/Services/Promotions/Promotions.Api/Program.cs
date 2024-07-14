@@ -16,6 +16,7 @@ public class Program
         builder.Services
             .AddSingleton<IPromotionsRepository, OptionsPromotionsRepository>()
             .AddSingleton<ICartAdjustmentService, CartAdjustmentService>()
+            .AddSingleton<IPercentOffPromotion, PercentOffPromotion>()
             .AddSingleton<IMoneyOffPromotion, MoneyOffPromotion>();
 
         builder.Services
