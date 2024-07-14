@@ -1,5 +1,4 @@
-﻿using Catalog.Domain;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Moq;
 using Promotions.Api.Services.PromotionTypes;
 using Promotions.Domain;
