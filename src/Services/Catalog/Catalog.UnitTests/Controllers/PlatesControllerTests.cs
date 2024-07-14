@@ -29,7 +29,10 @@ public class PlatesControllerTests
     public async Task List_ReturnsAllPlates()
     {
         // Arrange
-        var response = _fixture.Create<PagedResult<Plate>>();
+        var response = _fixture
+            .Build<PagedResult<Plate>>()
+            .With(x => x.Results, _fixture.CreateMany<Plate>(10))
+            .Create();
         _mockPlateRepository
             .Setup(x => x.GetPlatesAsync(It.IsAny<PagingOptions>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(response);
@@ -38,8 +41,8 @@ public class PlatesControllerTests
         var result = await _sut.List(new());
 
         // Assert
-        _mockSalesPriceMarkupService.Verify(x => x.AddSalesPriceMarkup(It.IsAny<Plate>()), Times.Exactly(100));
-        foreach (var p in plates)
+        _mockSalesPriceMarkupService.Verify(x => x.AddSalesPriceMarkup(It.IsAny<Plate>()), Times.Exactly(10));
+        foreach (var p in response.Results)
         {
             _mockSalesPriceMarkupService.Verify(x => x.AddSalesPriceMarkup(p), Times.Once());
         }
