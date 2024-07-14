@@ -127,6 +127,6 @@ public class MoneyOffPromotionTests
                 }
             ]
         };
-        Assert.Equal(expected, result);
+        Assert.Equivalent(expected, result);
     }
 }
