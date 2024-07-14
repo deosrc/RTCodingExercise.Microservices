@@ -1,4 +1,5 @@
 ﻿using Catalog.API.Data.Repositories;
+using Catalog.API.Services.SalesPriceMarkup;
 using System.Net;
 
 namespace Catalog.API.Controllers;
@@ -6,18 +7,25 @@ namespace Catalog.API.Controllers;
 [ApiController]
 public class PlatesController : ControllerBase
 {
-    private IPlateRepository _platesRepository;
+    private readonly IPlateRepository _platesRepository;
+    private readonly ISalesPriceMarkupService _salesPriceMarkupService;
 
-    public PlatesController(IPlateRepository platesRepository)
+    public PlatesController(IPlateRepository platesRepository, ISalesPriceMarkupService salesPriceMarkupService)
     {
         _platesRepository = platesRepository;
+        _salesPriceMarkupService = salesPriceMarkupService;
     }
 
     [HttpGet("")]
     [ProducesResponseType(typeof(IEnumerable<Plate>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> List(CancellationToken cancellationToken = default)
     {
-        return new OkObjectResult(await _platesRepository.GetPlatesAsync(cancellationToken));
+        var plates = await _platesRepository.GetPlatesAsync(cancellationToken);
+        foreach (var p in plates)
+        {
+            _salesPriceMarkupService.AddSalesPriceMarkup(p);
+        }
+        return new OkObjectResult(plates);
     }
 
     [HttpPost("")]

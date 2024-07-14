@@ -1,4 +1,5 @@
 ﻿using Catalog.API.Data.Repositories;
+using Catalog.API.Services.SalesPriceMarkup;
 using MassTransit;
 using Microsoft.OpenApi.Models;
 using RabbitMQ.Client;
@@ -79,6 +80,8 @@ namespace Catalog.API
             services.AddMassTransitHostedService();
 
             services.AddScoped<IPlateRepository, EFPlateRepository>();
+            services.AddSingleton<ISalesPriceMarkupService, PercentSalesPriceMarkupService>();
+            services.Configure<PercentSalesPriceMarkupOptions>(Configuration.GetSection(nameof(PercentSalesPriceMarkupOptions)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
