@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 using RabbitMQ.Client;
-using RTCodingExercise.Microservices.Services;
+using RTCodingExercise.Microservices.Services.Catalog;
 
 namespace RTCodingExercise.WebMVC
 {

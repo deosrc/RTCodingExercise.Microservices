@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace RTCodingExercise.Microservices.Services;
+namespace RTCodingExercise.Microservices.Services.Catalog;
 
 public class CatalogApiService : ICatalogService
 {

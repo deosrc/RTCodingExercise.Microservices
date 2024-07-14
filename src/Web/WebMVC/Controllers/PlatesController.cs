@@ -1,4 +1,4 @@
-﻿using RTCodingExercise.Microservices.Services;
+﻿using RTCodingExercise.Microservices.Services.Catalog;
 
 namespace RTCodingExercise.Microservices.Controllers;
 public class PlatesController : Controller

@@ -3,7 +3,7 @@ using Catalog.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using RTCodingExercise.Microservices.Controllers;
-using RTCodingExercise.Microservices.Services;
+using RTCodingExercise.Microservices.Services.Catalog;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
