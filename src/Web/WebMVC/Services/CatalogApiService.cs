@@ -25,11 +25,15 @@ public class CatalogApiService : ICatalogService
         _http.BaseAddress = baseUri;
     }
 
-    public async Task<PagedResult<Plate>?> GetPlatesAsync(CancellationToken cancellationToken = default)
+    public async Task<PagedResult<Plate>> GetPlatesAsync(PagingOptions? paging = null, CancellationToken cancellationToken = default)
     {
+        paging ??= new();
+
         try
         {
-            return await _http.GetFromJsonAsync<PagedResult<Plate>>("Plates");
+            var uri = new Uri($"Plates?Paging.Page={paging.Page}&Paging.ItemsPerPage={paging.ItemsPerPage}", UriKind.Relative);
+            return await _http.GetFromJsonAsync<PagedResult<Plate>>(uri, cancellationToken: cancellationToken)
+                ?? throw new ApiServiceException<CatalogApiService>("Unexpected response while retrieving plates.");
         }
         catch (Exception ex)
         {
@@ -44,7 +48,7 @@ public class CatalogApiService : ICatalogService
         try
         {
             var response = await _http.PostAsJsonAsync("Plates", plate, cancellationToken);
-            return await ParseOperationResponseAsync<Plate>(response);
+            return await ParseOperationResponseAsync<Plate>(response, cancellationToken);
         }
         catch (Exception ex)
         {

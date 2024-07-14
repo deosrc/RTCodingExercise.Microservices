@@ -30,4 +30,17 @@
             </tr>
         }
     </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="5">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item @(!Model.Paging.HasPrevious ? "disabled" : "")"><a class="page-link" asp-action="Index" asp-route-paging.page="@(Model.Paging.Page - 1)">Previous</a></li>
+                        <li class="page-item"><a class="page-link" asp-action="Index" asp-route-paging.page="@Model.Paging.Page">@Model.Paging.Page</a></li>
+                        <li class="page-item @(!Model.Paging.HasNext ? "disabled" : "")"><a class="page-link" asp-action="Index" asp-route-paging.page="@(Model.Paging.Page + 1)">Next</a></li>
+                    </ul>
+                </nav>
+            </td>
+        </tr>
+    </tfoot>
 </table>

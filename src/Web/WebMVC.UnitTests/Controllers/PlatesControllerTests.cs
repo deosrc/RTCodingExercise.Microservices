@@ -25,15 +25,37 @@ public class PlatesControllerTests
     {
         var plates = _fixture.Create<PagedResult<Plate>>();
         _mockCatalogService
-            .Setup(x => x.GetPlatesAsync(It.IsAny<CancellationToken>()))
+            .Setup(x => x.GetPlatesAsync(It.IsAny<PagingOptions>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(plates);
 
-        var result = await _sut.Index();
+        var result = await _sut.Index(null);
 
-        _mockCatalogService.Verify(x => x.GetPlatesAsync(It.IsAny<CancellationToken>()), Times.Once());
+        _mockCatalogService.Verify(x => x.GetPlatesAsync(It.IsAny<PagingOptions>(), It.IsAny<CancellationToken>()), Times.Once());
         Assert.IsType<ViewResult>(result);
         var viewResult = (ViewResult)result;
         Assert.Equal(plates, viewResult.Model);
+    }
+
+    [Theory]
+    [InlineData(1, 20)]
+    [InlineData(2, 10)]
+    [InlineData(11, 15)]
+    public async Task Index_WithPageInfo_UsesPagingOptions(int page, int itemsPerPage)
+    {
+        var plates = _fixture.Create<PagedResult<Plate>>();
+        _mockCatalogService
+            .Setup(x => x.GetPlatesAsync(It.IsAny<PagingOptions>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(plates);
+
+        var paging = new PagingOptions
+        {
+            Page = page,
+            ItemsPerPage = itemsPerPage
+        };
+        var result = await _sut.Index(paging);
+
+        _mockCatalogService.Verify(x => x.GetPlatesAsync(It.IsAny<PagingOptions>(), It.IsAny<CancellationToken>()), Times.Once());
+        _mockCatalogService.Verify(x => x.GetPlatesAsync(paging, It.IsAny<CancellationToken>()), Times.Once());
     }
 
     [Fact]
@@ -44,7 +66,7 @@ public class PlatesControllerTests
 
         var result = await _sut.Add(plate);
 
-        _mockCatalogService.Verify(x => x.GetPlatesAsync(It.IsAny<CancellationToken>()), Times.Never());
+        _mockCatalogService.Verify(x => x.GetPlatesAsync(It.IsAny<PagingOptions>(), It.IsAny<CancellationToken>()), Times.Never());
         Assert.IsType<ViewResult>(result);
         var viewResult = (ViewResult)result;
         Assert.Equal(plate, viewResult.Model);

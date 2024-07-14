@@ -10,9 +10,9 @@ public class PlatesController : Controller
         _catalogService = catalogService;
     }
 
-    public async Task<IActionResult> Index(CancellationToken cancellationToken = default)
+    public async Task<IActionResult> Index(PagingOptions? paging, CancellationToken cancellationToken = default)
     {
-        var plates = await _catalogService.GetPlatesAsync(cancellationToken);
+        var plates = await _catalogService.GetPlatesAsync(paging, cancellationToken);
         return View(plates);
     }
 
