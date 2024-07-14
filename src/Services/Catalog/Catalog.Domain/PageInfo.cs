@@ -2,7 +2,13 @@
 
 public record PageInfo : PagingOptions
 {
+    public PageInfo()
+    {
+        // Nothing to do.
+    }
+
     public PageInfo(PagingOptions options, bool hasMorePages)
+        : this()
     {
         Page = options.Page;
         ItemsPerPage = options.ItemsPerPage;
@@ -10,5 +16,5 @@ public record PageInfo : PagingOptions
     }
 
     public bool HasPrevious => Page > 1;
-    public bool HasNext { get; }
+    public bool HasNext { get; set; }
 }

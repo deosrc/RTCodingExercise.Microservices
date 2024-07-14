@@ -25,12 +25,11 @@ public class CatalogApiService : ICatalogService
         _http.BaseAddress = baseUri;
     }
 
-    public async Task<IEnumerable<Plate>> GetPlatesAsync(CancellationToken cancellationToken = default)
+    public async Task<PagedResult<Plate>?> GetPlatesAsync(CancellationToken cancellationToken = default)
     {
         try
         {
-            var result = await _http.GetFromJsonAsync<IEnumerable<Plate>>("Plates");
-            return result ?? Enumerable.Empty<Plate>();
+            return await _http.GetFromJsonAsync<PagedResult<Plate>>("Plates");
         }
         catch (Exception ex)
         {

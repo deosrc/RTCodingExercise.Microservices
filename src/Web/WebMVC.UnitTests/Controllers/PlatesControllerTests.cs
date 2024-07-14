@@ -23,7 +23,7 @@ public class PlatesControllerTests
     [Fact]
     public async Task Index_ReturnsPlatesList()
     {
-        var plates = _fixture.CreateMany<Plate>(100);
+        var plates = _fixture.Create<PagedResult<Plate>>();
         _mockCatalogService
             .Setup(x => x.GetPlatesAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(plates);

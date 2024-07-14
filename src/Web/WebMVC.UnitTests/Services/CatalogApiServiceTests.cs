@@ -30,15 +30,17 @@ public class CatalogApiServiceTests
     [Fact]
     public async Task GetPlatesAsync_WhenSuccessResponse_ReturnsPlates()
     {
-        var plates = _fixture.CreateMany<Plate>(100);
+        var response = _fixture.Create<PagedResult<Plate>>();
         _mockHandler
             .Expect("http://localtest.me/api/Plates")
-            .Respond(HttpStatusCode.OK, JsonContent.Create(plates));
+            .Respond(HttpStatusCode.OK, JsonContent.Create(response));
 
         var result = await _sut.GetPlatesAsync();
 
         _mockHandler.VerifyNoOutstandingExpectation();
-        Assert.Equal(plates, result);
+        Assert.NotNull(result);
+        Assert.Equal(response.Results, result!.Results);
+        Assert.Equal(response.Paging, result.Paging);
     }
 
     [Fact]

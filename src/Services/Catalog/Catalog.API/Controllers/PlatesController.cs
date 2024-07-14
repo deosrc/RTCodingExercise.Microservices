@@ -15,7 +15,7 @@ public class PlatesController : ControllerBase
 
     [HttpGet("")]
     [ProducesResponseType(typeof(PagedResult<Plate>), (int)HttpStatusCode.OK)]
-    public async Task<IActionResult> List(ListRequest request, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> List([FromQuery] ListRequest request, CancellationToken cancellationToken = default)
     {
         return new OkObjectResult(await _platesRepository.GetPlatesAsync(request.Paging, cancellationToken));
     }

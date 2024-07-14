@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Catalog.Domain.Plate>
+﻿@model PagedResult<Plate>
 
 @{
     ViewData["Title"] = "Plates";
@@ -19,7 +19,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var p in Model)
+        @foreach (var p in Model.Results)
         {
             <tr>
                 <td>@p.Registration</td>
