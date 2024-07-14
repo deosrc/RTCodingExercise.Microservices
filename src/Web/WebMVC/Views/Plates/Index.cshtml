@@ -1,4 +1,5 @@
-﻿@model PagedResult<Plate>
+@using System.Globalization
+@model PagedResult<Plate>
 
 @{
     ViewData["Title"] = "Plates";
@@ -23,8 +24,8 @@
         {
             <tr>
                 <td>@p.Registration</td>
-                <td>@p.PurchasePrice</td>
-                <td>@p.SalePrice</td>
+                <td><money value="@p.PurchasePrice" /></td>
+                <td><money value="@p.SalePrice" /></td>
                 <td>@p.Letters</td>
                 <td>@p.Numbers</td>
             </tr>

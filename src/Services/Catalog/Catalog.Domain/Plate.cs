@@ -1,4 +1,6 @@
-﻿namespace Catalog.Domain
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Catalog.Domain
 {
     public record Plate
     {
@@ -13,5 +15,8 @@
         public string? Letters { get; set; }
 
         public int Numbers { get; set; }
+
+        [NotMapped]
+        public string? SalesPriceMarkup { get; set; }
     }
 }

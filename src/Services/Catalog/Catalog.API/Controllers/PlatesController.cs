@@ -1,4 +1,5 @@
-﻿using Catalog.API.Data.Repositories;
+using Catalog.API.Data.Repositories;
+using Catalog.API.Services.SalesPriceMarkup;
 using Paging.Domain;
 using System.Net;
 
@@ -7,18 +8,25 @@ namespace Catalog.API.Controllers;
 [ApiController]
 public class PlatesController : ControllerBase
 {
-    private IPlateRepository _platesRepository;
+    private readonly IPlateRepository _platesRepository;
+    private readonly ISalesPriceMarkupService _salesPriceMarkupService;
 
-    public PlatesController(IPlateRepository platesRepository)
+    public PlatesController(IPlateRepository platesRepository, ISalesPriceMarkupService salesPriceMarkupService)
     {
         _platesRepository = platesRepository;
+        _salesPriceMarkupService = salesPriceMarkupService;
     }
 
     [HttpGet("")]
     [ProducesResponseType(typeof(PagedResult<Plate>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> List([FromQuery] ListRequest request, CancellationToken cancellationToken = default)
     {
-        return new OkObjectResult(await _platesRepository.GetPlatesAsync(request.Paging, cancellationToken));
+        var result = await _platesRepository.GetPlatesAsync(request.Paging, cancellationToken);
+        foreach (var p in result.Results)
+        {
+            _salesPriceMarkupService.AddSalesPriceMarkup(p);
+        }
+        return new OkObjectResult(result);
     }
 
     [HttpPost("")]
