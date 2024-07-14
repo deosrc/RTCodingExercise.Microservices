@@ -25,8 +25,9 @@
         <label asp-for="SalePrice" class="form-label">Sale Price</label>
         <div class="input-group mb-3">
             <span class="input-group-text">£</span>
-            <input asp-for="SalePrice" type="text" inputmode="numeric" pattern="[0-9.]*" required class="form-control" />
+            <input asp-for="SalePrice" type="text" inputmode="numeric" pattern="[0-9.]*" required class="form-control" aria-describedby="salesPriceHelp" />
         </div>
+        <div id="salesPriceHelp" class="form-text">This should not include the sales markup. This will be added automatically.</div>
         <span class="text-danger" asp-validation-for="SalePrice"></span>
     </div>
     <div class="mb-3">
