@@ -18,6 +18,14 @@ services:
     depends_on:
       - sqldata
 
+  promotions-api:
+    image: regtansfers/rtcodingexercise-promotionsapi
+    build:
+      context: .
+      dockerfile: src/Services/Promotions/Promotions.Api/Dockerfile
+    depends_on:
+      - sqldata
+
   sqldata:
     image: mcr.microsoft.com/mssql/server:2019-latest
 
