@@ -29,6 +29,6 @@ public class CartAdjustmentService(IPromotionsRepository promotionsRepository, I
             _ => throw new InvalidOperationException("Unrecognised promotion type.")
         };
 
-        return promotionTypeService.TryApplyPromotion(cart, promotion.Options);
+        return promotionTypeService.TryApplyPromotion(cart, promotion.Id.ToString(), promotion.Options);
     }
 }

@@ -72,6 +72,7 @@ public class CartAdjustmentServiceTests
     [Fact]
     public async Task TryApplyPromotionAsync_WhenMoneyOffPromotionType_ReturnsPromotionResult()
     {
+        var promotionOptions = _fixture.Create<Dictionary<string, string>>();
         _mockPromotionRepository
             .Setup(x => x.GetCurrentPromotionByCodeAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new Promotion()
@@ -79,7 +80,8 @@ public class CartAdjustmentServiceTests
                 Id = Guid.Parse("64f3d985-f036-444e-b6ee-a38b239d53b3"),
                 Description = "Test promotion",
                 Code = "TEST123",
-                Type = PromotionType.MoneyOff
+                Type = PromotionType.MoneyOff,
+                Options = promotionOptions
             });
 
         var expected = _fixture
@@ -87,7 +89,7 @@ public class CartAdjustmentServiceTests
             .With(x => x.IsSuccess, true)
             .Create();
         _mockMoneyOffPromotion
-            .Setup(x => x.TryApplyPromotion(It.IsAny<Cart>(), It.IsAny<IReadOnlyDictionary<string, string>>()))
+            .Setup(x => x.TryApplyPromotion(It.IsAny<Cart>(), It.IsAny<string>(), It.IsAny<IReadOnlyDictionary<string, string>>()))
             .Returns(expected);
 
         var cart = _fixture
@@ -97,6 +99,10 @@ public class CartAdjustmentServiceTests
 
         var result = await _sut.TryApplyPromotionAsync(cart);
 
-        Assert.Same(expected, result);
+        Assert.Multiple(
+            () => _mockPromotionRepository.Verify(x => x.GetCurrentPromotionByCodeAsync("TEST123", It.IsAny<CancellationToken>())),
+            () => _mockMoneyOffPromotion.Verify(x => x.TryApplyPromotion(cart, "64f3d985-f036-444e-b6ee-a38b239d53b3", promotionOptions), Times.Once()),
+            () => Assert.Same(expected, result)
+        );
     }
 }
