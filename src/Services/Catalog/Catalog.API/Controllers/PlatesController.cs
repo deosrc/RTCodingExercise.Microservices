@@ -1,4 +1,5 @@
 ﻿using Catalog.API.Data.Repositories;
+using Paging.Domain;
 using System.Net;
 
 namespace Catalog.API.Controllers;

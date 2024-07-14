@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\BuildingBlocks\Paging\Paging.Domain\Paging.Domain.csproj" />
-  </ItemGroup>
-
 </Project>

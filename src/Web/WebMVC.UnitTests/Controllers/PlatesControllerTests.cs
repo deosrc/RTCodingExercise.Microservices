@@ -2,6 +2,7 @@
 using Catalog.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Paging.Domain;
 using RTCodingExercise.Microservices.Controllers;
 using RTCodingExercise.Microservices.Services;
 using System.Threading;

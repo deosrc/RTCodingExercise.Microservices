@@ -1,7 +1,6 @@
-﻿using Catalog.Domain;
-using Xunit;
+﻿using Paging.Domain;
 
-namespace Catalog.UnitTests.Domain;
+namespace Paging.UnitTests.Domain;
 public class PagingOptionsTests
 {
     [Fact]

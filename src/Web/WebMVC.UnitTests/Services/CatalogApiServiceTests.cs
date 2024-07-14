@@ -3,6 +3,7 @@ using Catalog.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
+using Paging.Domain;
 using RichardSzalay.MockHttp;
 using RTCodingExercise.Microservices.Services;
 using System.Net;

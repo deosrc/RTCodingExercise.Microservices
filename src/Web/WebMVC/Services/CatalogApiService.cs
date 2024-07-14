@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using Paging.Domain;
+using System.Text.Json;
 
 namespace RTCodingExercise.Microservices.Services;
 

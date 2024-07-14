@@ -1,4 +1,4 @@
-﻿namespace Catalog.Domain;
+﻿namespace Paging.Domain;
 public record PagedResult<TResult>
     where TResult : class
 {

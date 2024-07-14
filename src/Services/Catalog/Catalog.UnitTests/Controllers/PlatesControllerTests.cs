@@ -4,6 +4,7 @@ using Catalog.API.Data.Repositories;
 using Catalog.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Paging.Domain;
 using System;
 using System.Linq;
 using System.Threading;

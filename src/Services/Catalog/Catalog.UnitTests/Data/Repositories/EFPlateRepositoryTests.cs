@@ -5,6 +5,7 @@ using Catalog.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
+using Paging.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;

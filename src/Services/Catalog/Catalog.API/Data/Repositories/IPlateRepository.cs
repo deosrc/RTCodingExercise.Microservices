@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using Paging.Domain;
+using System.Runtime.CompilerServices;
 
 namespace Catalog.API.Data.Repositories;
 

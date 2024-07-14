@@ -1,4 +1,6 @@
-﻿namespace RTCodingExercise.Microservices.Services;
+﻿using Paging.Domain;
+
+namespace RTCodingExercise.Microservices.Services;
 
 public interface ICatalogService
 {

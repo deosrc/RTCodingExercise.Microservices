@@ -1,8 +1,7 @@
 ﻿using AutoFixture;
-using Catalog.Domain;
-using Xunit;
+using Paging.Domain;
 
-namespace Catalog.UnitTests.Domain;
+namespace Paging.UnitTests.Domain;
 public class PageInfoTests
 {
     private readonly Fixture _fixture = new();

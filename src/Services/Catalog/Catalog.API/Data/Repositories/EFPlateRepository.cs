@@ -1,4 +1,6 @@
-﻿namespace Catalog.API.Data.Repositories;
+﻿using Paging.Domain;
+
+namespace Catalog.API.Data.Repositories;
 
 public class EFPlateRepository : IPlateRepository
 {

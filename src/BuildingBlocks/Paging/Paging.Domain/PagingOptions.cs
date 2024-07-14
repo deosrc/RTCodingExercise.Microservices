@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Catalog.Domain;
+namespace Paging.Domain;
 public record PagingOptions
 {
     public const int DefaultItemsPerPage = 20;
