@@ -5,13 +5,14 @@ using Promotions.Domain;
 
 namespace Promotions.Api.Services;
 
-public class CartAdjustmentService(IPromotionsRepository promotionsRepository, IMoneyOffPromotion moneyOffPromotion, ILogger<CartAdjustmentService> logger) : ICartAdjustmentService
+public class CartAdjustmentService(IPromotionsRepository promotionsRepository, IMoneyOffPromotion moneyOffPromotion, IPercentOffPromotion percentOffPromotion, ILogger<CartAdjustmentService> logger) : ICartAdjustmentService
 {
     private readonly IPromotionsRepository _promotionsRepository = promotionsRepository;
     private readonly ILogger<CartAdjustmentService> _logger = logger;
 
     // Promotion types injected via DI. Potential to make this more flexible in future if it becomes more complex.
     private readonly IMoneyOffPromotion _moneyOffPromotion = moneyOffPromotion;
+    private readonly IPercentOffPromotion _percentOffPromotion = percentOffPromotion;
 
     public async Task<PromotionApplyResult> TryApplyPromotionAsync(Cart cart, CancellationToken cancellationToken = default)
     {
@@ -26,6 +27,7 @@ public class CartAdjustmentService(IPromotionsRepository promotionsRepository, I
         IPromotionTypeService promotionTypeService = promotion.Type switch
         {
             PromotionType.MoneyOff => _moneyOffPromotion,
+            PromotionType.PercentOff => _percentOffPromotion,
             _ => throw new InvalidOperationException("Unrecognised promotion type.")
         };
 
