@@ -1,3 +1,7 @@
+using Promotions.Api.Data;
+using Promotions.Api.Data.Models;
+using Promotions.Api.Services;
+using Promotions.Api.Services.PromotionTypes;
 using System.Reflection;
 
 namespace Promotions.Api;
@@ -9,6 +13,13 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
+        builder.Services
+            .AddSingleton<IPromotionsRepository, OptionsPromotionsRepository>()
+            .AddSingleton<ICartAdjustmentService, CartAdjustmentService>()
+            .AddSingleton<IMoneyOffPromotion, MoneyOffPromotion>();
+
+        builder.Services
+            .Configure<List<Promotion>>(builder.Configuration.GetSection("Promotions"));
 
         builder.Services.AddControllers();
         builder.Services.AddProblemDetails();

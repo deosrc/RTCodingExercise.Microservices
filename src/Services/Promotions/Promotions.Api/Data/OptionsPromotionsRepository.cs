@@ -9,9 +9,9 @@ namespace Promotions.Api.Data;
 /// <remarks>
 /// Only suitable for small numbers of promotions.
 /// </remarks>
-public class OptionsPromotionsRepository(IOptionsMonitor<IEnumerable<Promotion>> options, ILogger<OptionsPromotionsRepository> logger, TimeProvider? timeProvider = null) : IPromotionsRepository
+public class OptionsPromotionsRepository(IOptionsMonitor<List<Promotion>> options, ILogger<OptionsPromotionsRepository> logger, TimeProvider? timeProvider = null) : IPromotionsRepository
 {
-    private readonly IOptionsMonitor<IEnumerable<Promotion>> _options = options;
+    private readonly IOptionsMonitor<List<Promotion>> _options = options;
     private readonly ILogger<OptionsPromotionsRepository> _logger = logger;
     private readonly TimeProvider _timeProvider = timeProvider ?? TimeProvider.System;
 
@@ -37,6 +37,6 @@ public class OptionsPromotionsRepository(IOptionsMonitor<IEnumerable<Promotion>>
         }
 
         _logger.LogInformation("Valid and current promotion found for {PromotionCode}.", code);
-        return Task.FromResult(promotion);
+        return Task.FromResult(promotion!);
     }
 }

@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace Promotions.Api.Services.PromotionTypes;
 
-public class MoneyOffPromotion(ILogger<MoneyOffPromotion> logger) : IPromotionTypeService
+public class MoneyOffPromotion(ILogger<MoneyOffPromotion> logger) : IMoneyOffPromotion, IPromotionTypeService
 {
     private const string OptionDiscountAmount = "DiscountAmount";
 
