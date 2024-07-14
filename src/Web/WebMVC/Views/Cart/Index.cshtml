@@ -1,0 +1,52 @@
+﻿@model Promotions.Domain.PromotionApplyResult?
+@{
+    ViewData["Title"] = "Cart";
+}
+
+<h1 class="h1">Cart</h1>
+
+<div class="alert alert-danger">
+    <h3>FOR TESTING ONLY</h3>
+    <p>This page is only intended to demonstrate the promotions service.</p>
+</div>
+
+<form method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Registation Plate: T35T ING</td>
+                <td><input type="text" pattern="[0-9.]+" inputmode="numeric" title="Must be a numeric value" name="platePrice" /></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>Promo Code:</td>
+                <td><input type="text" name="promotionCode" /></td>
+            </tr>
+            @if(Model is not null)
+            {
+                <tr>
+                    <td colspan="2">
+                        <div class="alert @(Model.IsSuccess ? "alert-success" : "alert-warning")">
+                            <p>@Model.Message</p>
+                        </div>
+                    </td>
+                </tr>
+                @foreach (var p in Model.PromotionCartItems)
+                {
+                    <tr>
+                        <td>@p.Description</td>
+                        <td><money value="@(-p.Discount)" /></td>
+                    </tr>
+                }
+            }
+        </tfoot>
+    </table>
+    <button type="submit" class="btn btn-primary">Update Cart</button>
+</form>

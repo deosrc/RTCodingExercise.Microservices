@@ -17,7 +17,7 @@ public class PromoCodeController(ICartAdjustmentService cartAdjustmentService, I
     /// <param name="cart"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPost("apply")]
+    [HttpPost("Apply")]
     public async Task<IActionResult> Apply(Cart cart, CancellationToken cancellationToken = default)
     {
         return Ok(await _cartAdjustmentService.TryApplyPromotionAsync(cart, cancellationToken));

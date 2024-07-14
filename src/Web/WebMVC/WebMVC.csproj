@@ -38,6 +38,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Services\Catalog\Catalog.Domain\Catalog.Domain.csproj" />
+	  <ProjectReference Include="..\..\Services\Promotions\Promotions.Domain\Promotions.Domain.csproj" />
 	</ItemGroup>
 
 </Project>
