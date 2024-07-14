@@ -19,7 +19,7 @@ public class MoneyOffPromotion(ILogger<MoneyOffPromotion> logger) : IMoneyOffPro
         if (!decimal.TryParse(discountAmountRaw, out var discountAmount))
             throw new InvalidOperationException("Promotion is not configured correctly: Invalid format for discount amount.");
 
-        var cartTotal = cart.Plates.Sum(x => x.SalePrice);
+        var cartTotal = cart.CartItems.Sum(x => x.Price);
         if (cartTotal < discountAmount)
             return new PromotionApplyResult
             {

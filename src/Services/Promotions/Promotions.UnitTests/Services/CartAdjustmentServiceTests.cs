@@ -53,7 +53,6 @@ public class CartAdjustmentServiceTests
             .ReturnsAsync(new Promotion()
             {
                 Id = Guid.Parse("64f3d985-f036-444e-b6ee-a38b239d53b3"),
-                Description = "Test promotion",
                 Code = "TEST123",
                 Type = 0
             });
@@ -78,7 +77,6 @@ public class CartAdjustmentServiceTests
             .ReturnsAsync(new Promotion()
             {
                 Id = Guid.Parse("64f3d985-f036-444e-b6ee-a38b239d53b3"),
-                Description = "Test promotion",
                 Code = "TEST123",
                 Type = PromotionType.MoneyOff,
                 Options = promotionOptions

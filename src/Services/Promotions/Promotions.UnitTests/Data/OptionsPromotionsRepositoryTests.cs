@@ -20,7 +20,7 @@ public class OptionsPromotionsRepositoryTests
 
     public OptionsPromotionsRepositoryTests()
     {
-        var optionsMonitor = new Mock<IOptionsMonitor<IEnumerable<Promotion>>>();
+        var optionsMonitor = new Mock<IOptionsMonitor<List<Promotion>>>();
         optionsMonitor
             .SetupGet(x => x.CurrentValue)
             .Returns(() => _promotions);

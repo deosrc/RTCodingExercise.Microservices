@@ -14,10 +14,10 @@ public class MoneyOffPromotionTests
     {
         var cart = new Cart()
         {
-            Plates = [
-                new Plate()
+            CartItems = [
+                new CartItem()
                 {
-                    SalePrice = 123.4M
+                    Price = 123.4M
                 }
             ]
         };
@@ -33,10 +33,10 @@ public class MoneyOffPromotionTests
     {
         var cart = new Cart()
         {
-            Plates = [
-                new Plate()
+            CartItems = [
+                new CartItem()
                 {
-                    SalePrice = 123.4M
+                    Price = 123.4M
                 }
             ]
         };
@@ -59,14 +59,14 @@ public class MoneyOffPromotionTests
     {
         var cart = new Cart()
         {
-            Plates = [
-                new Plate()
+            CartItems = [
+                new CartItem()
                 {
-                    SalePrice = item1Amount
+                    Price = item1Amount
                 },
-                new Plate()
+                new CartItem()
                 {
-                    SalePrice = item2Amount
+                    Price = item2Amount
                 }
             ]
         };
@@ -95,14 +95,14 @@ public class MoneyOffPromotionTests
     {
         var cart = new Cart()
         {
-            Plates = [
-                new Plate()
+            CartItems = [
+                new CartItem()
                 {
-                    SalePrice = item1Amount
+                    Price = item1Amount
                 },
-                new Plate()
+                new CartItem()
                 {
-                    SalePrice = item2Amount
+                    Price = item2Amount
                 }
             ]
         };
