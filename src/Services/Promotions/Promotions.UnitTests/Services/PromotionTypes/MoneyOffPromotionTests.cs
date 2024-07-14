@@ -28,6 +28,29 @@ public class MoneyOffPromotionTests
         Assert.Equal("Promotion is not configured correctly: Missing discount amount", ex.Message);
     }
 
+    [Fact]
+    public void TryApplyPromotion_WhenDiscountOptionInvalid_ThrowsException()
+    {
+        var cart = new Cart()
+        {
+            Plates = [
+                new Plate()
+                {
+                    SalePrice = 123.4M
+                }
+            ]
+        };
+
+        var options = new Dictionary<string, string>
+        {
+            { "DiscountAmount", "Invalid" }
+        };
+        void act() => _sut.TryApplyPromotion(cart, Guid.Empty.ToString(), options);
+
+        var ex = Assert.Throws<InvalidOperationException>(act);
+        Assert.Equal("Promotion is not configured correctly: Invalid format for discount amount.", ex.Message);
+    }
+
     [Theory]
     [InlineData(10.0, 10.0, 22.3, "Promotion requires a cart total of at least £22.30.")]
     [InlineData(10.0, 12.2, 22.3, "Promotion requires a cart total of at least £22.30.")]
